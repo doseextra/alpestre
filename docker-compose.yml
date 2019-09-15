@@ -1,0 +1,46 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb:10.4.7
+    container_name: mariadb_alpestre
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./dbserver/files:/var/lib/mysql
+      - ./dbserver/dump:/docker-entrypoint-initdb.d
+      - ./dbserver/exp:/mnt/exp
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: site_alpestre
+      MYSQL_ROOT_PASSWORD: alpestre
+    networks:
+      - app-network
+  wordpress:
+    container_name: wordpress_alpestre
+    build:
+      context: ./wordpress
+    working_dir: /var/www/html
+    volumes:
+      - ./wordpress/theme/src/public:/var/www/html/wp-content/themes/alpestre
+      - ./wordpress/wp-content/plugins:/var/www/html/wp-content/plugins
+      - ./wordpress/wp-content/uploads:/var/www/html/wp-content/uploads
+      - ./wordpress/wp-content/languages:/var/www/html/wp-content/languages
+      - ./apache2:/etc/apache2/sites-enabled
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - db:mariadb
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: site_alpestre
+      WORDPRESS_DB_PASSWORD: alpestre
+      ENV: local
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

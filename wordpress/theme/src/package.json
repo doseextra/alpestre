@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/doseextra/alpestre#readme",
   "devDependencies": {
-    "laravel-mix": "0.*"
+    "laravel-mix": "6.*"
   },
   "dependencies": {
     "animate": "^1.0.0",

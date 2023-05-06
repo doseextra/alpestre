@@ -30,7 +30,7 @@
     "bootstrap": "^4.3.1",
     "countdowntime": "0.0.3",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "popper": "^1.0.1",
     "select2": "^4.0.10"
   }
